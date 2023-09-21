@@ -9,3 +9,5 @@ services:
       - TG_API_ID
       - TG_API_ID_HASH
       - DEBUG
+    volumes:
+      - ./ggml-model-q4_1.gguf:/app/ggml-model-q4_1.gguf:ro
