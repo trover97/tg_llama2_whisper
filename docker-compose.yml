@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  telegram_bot:
+    build: .
+    environment:
+      - TELEGRAM_TOKEN
+      - OPENAI_API_KEY
+      - TG_API_ID
+      - TG_API_ID_HASH
+      - DEBUG
