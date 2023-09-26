@@ -2,6 +2,8 @@ from langchain.chains.summarize import load_summarize_chain
 from langchain.llms import LlamaCpp
 from langchain.prompts import PromptTemplate
 from langchain.text_splitter import CharacterTextSplitter
+from langchain.callbacks.manager import CallbackManager
+from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
 import os
 from dotenv import load_dotenv
 # import openai
@@ -11,7 +13,7 @@ langchain.debug = True
 load_dotenv()
 # openai.api_key = os.environ.get("OPENAI_API_KEY")
 n_gpu_layers = 200  # Change this value based on your model and your GPU VRAM pool.
-n_batch = 512  # Should be between 1 and n_ctx, consider the amount of VRAM in your GPU.
+n_batch = 1000  # Should be between 1 and n_ctx, consider the amount of VRAM in your GPU.
 n_ctx = 4096 
 
 
@@ -29,11 +31,14 @@ def make_summarize(filename, model_params):
         separator=""
     )
     docs = text_splitter.create_documents([data])
+    # Callbacks support token-wise streaming
+    callback_manager = CallbackManager([StreamingStdOutCallbackHandler()])
     openai_chat = LlamaCpp(
         model_path="ggml-model-q4_1.gguf",
         n_gpu_layers=n_gpu_layers,
         n_batch=n_batch,
-        n_ctx=n_ctx
+        n_ctx=n_ctx,
+        callback_manager=callback_manager
     )
     prompt_template = """Act as a professional technical meeting minutes writer.
     Tone: formal
