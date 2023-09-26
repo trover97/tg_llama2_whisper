@@ -22,7 +22,8 @@ RUN apt-get update && \
 
 RUN apt update && apt upgrade -y && apt install -y ffmpeg && apt install -y libmagic1
 
-RUN apt install -y libcudnn8 && apt install -y libcudnn8-dev
+RUN apt install -y libcudnn8 && apt install -y libcudnn8-dev libcublas11
+
 
 
 RUN python3.10 -m pip install --no-cache-dir poetry \
