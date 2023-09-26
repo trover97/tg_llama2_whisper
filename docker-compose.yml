@@ -11,3 +11,11 @@ services:
       - DEBUG
     volumes:
       - ./ggml-model-q4_1.gguf:/app/ggml-model-q4_1.gguf:ro
+    command: nvidia-smi
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]

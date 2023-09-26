@@ -1,18 +1,26 @@
-FROM python:3.10-slim
+FROM nvidia/cuda:12.2.0-base-ubuntu22.04
 
 ENV PYTHONUNBUFFERED=1
 ENV PYTHONDONTWRITEBYTECODE=1
 
 WORKDIR /app
 
-RUN apt update && apt install -y ffmpeg && apt install -y libmagic1 && apt install -y build-essential
-
 COPY pyproject.toml poetry.lock ./
 
 RUN export CMAKE_ARGS="-DLLAMA_CUBLAS=on"
 RUN export FORCE_CMAKE=1
 
-RUN pip install --no-cache-dir poetry \
+# Update the package list and install necessary tools
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+        software-properties-common && \
+    add-apt-repository -y ppa:deadsnakes/ppa && \
+    apt-get update && \
+    apt-get install -y python3.10 python3.10-venv python3.10-dev python3-pip && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+RUN python3.10 -m pip install --no-cache-dir poetry \
     && poetry config virtualenvs.create false \
     && poetry install --no-dev
 
