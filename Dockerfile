@@ -20,6 +20,8 @@ RUN apt-get update && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
+RUN apt install -y ffmpeg && apt install -y libmagic1
+
 RUN python3.10 -m pip install --no-cache-dir poetry \
     && poetry config virtualenvs.create false \
     && poetry install --no-dev
@@ -27,4 +29,4 @@ RUN python3.10 -m pip install --no-cache-dir poetry \
 
 COPY . .
 
-CMD ["python", "bot.py"]
+CMD ["python3.10", "bot.py"]
