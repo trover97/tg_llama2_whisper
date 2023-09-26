@@ -12,6 +12,7 @@ load_dotenv()
 # openai.api_key = os.environ.get("OPENAI_API_KEY")
 n_gpu_layers = 100  # Change this value based on your model and your GPU VRAM pool.
 n_batch = 512  # Should be between 1 and n_ctx, consider the amount of VRAM in your GPU.
+n_ctx = 4096 
 
 
 start_time = time.time()
@@ -32,6 +33,7 @@ def make_summarize(filename, model_params):
         model_path="ggml-model-q4_1.gguf",
         n_gpu_layers=n_gpu_layers,
         n_batch=n_batch,
+        n_ctx=n_ctx
     )
     prompt_template = """Act as a professional technical meeting minutes writer.
     Tone: formal
