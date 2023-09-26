@@ -10,8 +10,6 @@ COPY pyproject.toml poetry.lock ./
 RUN export CMAKE_ARGS="-DLLAMA_CUBLAS=on"
 RUN export FORCE_CMAKE=1
 
-RUN apt install libcudnn8 && apt install libcudnn8-dev
-
 # Update the package list and install necessary tools
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
@@ -22,7 +20,9 @@ RUN apt-get update && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-RUN apt update && apt install -y ffmpeg && apt install -y libmagic1
+RUN apt update && apt upgrade -y && apt install -y ffmpeg && apt install -y libmagic1
+
+RUN apt install -y libcudnn8 && apt install -y libcudnn8-dev
 
 
 RUN python3.10 -m pip install --no-cache-dir poetry \
