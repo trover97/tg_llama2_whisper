@@ -10,7 +10,7 @@ import langchain
 langchain.debug = True
 load_dotenv()
 # openai.api_key = os.environ.get("OPENAI_API_KEY")
-n_gpu_layers = 100  # Change this value based on your model and your GPU VRAM pool.
+n_gpu_layers = 200  # Change this value based on your model and your GPU VRAM pool.
 n_batch = 512  # Should be between 1 and n_ctx, consider the amount of VRAM in your GPU.
 n_ctx = 4096 
 
