@@ -30,7 +30,7 @@ def get_transcribe_version(filename):
     try:
         model = WhisperModel(model_size, device="cuda", compute_type="float16")
         segments, info = model.transcribe(f,  language="ru")
-        result = ''.join(list(segments))
+        result = ''.join(list(s.text for s in segments))
         write_in_file(result, f"{name_of_file}.txt")
     except openai.error.APIError as e:
         print(e)
@@ -41,13 +41,13 @@ def get_transcribe_version(filename):
         print("CUT EXECUTED")
         with open(f"{name_of_file}_1.mp3", "rb") as half:
             segments, info = model.transcribe(half,  language="ru")
-            result = ''.join(list(segments))
+            result = ''.join(list(s.text for s in segments))
             print("SUCCESS CUT 1")
         write_in_file(result, f"{name_of_file}.txt")
         os.remove(f"{name_of_file}_1.mp3")
         with open(f"{name_of_file}_2.mp3", "rb") as half:
             segments, info = model.transcribe(half,  language="ru")
-            result = ''.join(list(segments))
+            result = ''.join(list(s.text for s in segments))
             print("SUCCESS CUT 2")
         write_in_file(result, f"{name_of_file}.txt", mode="a")
         os.remove(f"{name_of_file}_2.mp3")
