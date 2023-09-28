@@ -7,8 +7,10 @@ WORKDIR /app
 
 COPY pyproject.toml poetry.lock ./
 
-RUN export CMAKE_ARGS="-DLLAMA_CUBLAS=on"
-RUN export FORCE_CMAKE=1
+ENV CMAKE_ARGS="-DLLAMA_CUBLAS=on"
+ENV FORCE_CMAKE=1
+ENV LLAMA_CUBLAS=1
+
 
 # Update the package list and install necessary tools
 RUN apt-get update && \
