@@ -6,6 +6,7 @@ from faster_whisper import WhisperModel
 
 model_size = "large-v2"
 load_dotenv()
+model = WhisperModel(model_size, device="cuda", compute_type="float16", num_workers=2)
 # openai.api_key = os.environ.get("OPENAI_API_KEY")
 
 
@@ -28,7 +29,6 @@ def get_transcribe_version(filename):
     f = open(filename, "rb")
     name_of_file = filename.split(".")[0]
     try:
-        model = WhisperModel(model_size, device="cuda", compute_type="float16")
         segments, info = model.transcribe(f,  language="ru")
         result = ''.join(list(s.text for s in segments))
         write_in_file(result, f"{name_of_file}.txt")

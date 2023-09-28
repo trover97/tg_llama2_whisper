@@ -19,6 +19,15 @@ n_ctx = 4096
 
 start_time = time.time()
 
+callback_manager = CallbackManager([StreamingStdOutCallbackHandler()])
+openai_chat = LlamaCpp(
+    model_path="ggml-model-q4_1.gguf",
+    n_gpu_layers=n_gpu_layers,
+    n_batch=n_batch,
+    n_ctx=n_ctx,
+    callback_manager=callback_manager
+)
+
 
 def make_summarize(filename, model_params):
     with open(filename, "r", encoding="utf-8") as f:
@@ -32,14 +41,6 @@ def make_summarize(filename, model_params):
     )
     docs = text_splitter.create_documents([data])
     # Callbacks support token-wise streaming
-    callback_manager = CallbackManager([StreamingStdOutCallbackHandler()])
-    openai_chat = LlamaCpp(
-        model_path="ggml-model-q4_1.gguf",
-        n_gpu_layers=n_gpu_layers,
-        n_batch=n_batch,
-        n_ctx=n_ctx,
-        callback_manager=callback_manager
-    )
     prompt_template = """Act as a professional technical meeting minutes writer.
     Tone: formal
     Format: Technical meeting summary
