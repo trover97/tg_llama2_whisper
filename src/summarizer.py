@@ -73,8 +73,8 @@ def make_summarize(filename, model_params):
         openai_chat,
         chain_type="map_reduce",
         return_intermediate_steps=True,
-        question_prompt=PROMPT,
-        refine_prompt=refine_prompt,
+        map_prompt=PROMPT,
+        combine_prompt=PROMPT,
     )
 
     resp = chain({"input_documents": docs}, return_only_outputs=True)
