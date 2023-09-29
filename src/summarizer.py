@@ -71,7 +71,7 @@ def make_summarize(filename, model_params):
     )
     chain = load_summarize_chain(
         openai_chat,
-        chain_type="refine",
+        chain_type="map_reduce",
         return_intermediate_steps=True,
         question_prompt=PROMPT,
         refine_prompt=refine_prompt,
